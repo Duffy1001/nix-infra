@@ -1,7 +1,7 @@
 { lib, config, pkgs, ... }:
 let customPkgs = import ../../pkgs { inherit pkgs; };
 in {
-  options.infra.root.nvmetExport.enable = lib.mkOption { type = lib.types.bool; default = true; description = "Whether to realize planned NVMe/TCP target exports."; };
+  options.infra.root.nvmetExport.enable = lib.mkOption { type = lib.types.bool; default = !(config.infra.vm.enable or false); description = "Whether to realize planned NVMe/TCP target exports."; };
   config = lib.mkIf config.infra.root.nvmetExport.enable {
     environment.etc."nix-infra/nvmet-plan.json".text = builtins.toJSON config.infra.root.nvmetPlan;
     systemd.services.nvmet-apply = {

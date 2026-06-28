@@ -38,12 +38,7 @@
           modules = [
             ./hosts/root
             ./profiles/vm/test.nix
-            {
-              networking.hostName = nixpkgs.lib.mkForce "root-vm";
-              infra.root.zvolCreate.enable = false;
-              infra.root.nvmetExport.enable = false;
-              infra.root.authorizationApi.enable = false;
-            }
+            { networking.hostName = nixpkgs.lib.mkForce "root-vm"; }
           ];
         };
         app01-vm = nixpkgs.lib.nixosSystem {

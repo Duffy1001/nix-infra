@@ -17,7 +17,7 @@ nix run .#app02-vm
 nix run .#desktop01-vm
 ```
 
-The VM profile uses serial console output, root autologin, a password of `root`, user-mode networking, and no graphics so the machines can boot in CI or a terminal-only development shell.
+The VM profile uses serial console output, root autologin, a password of `root`, user-mode networking, no graphics, and an ephemeral tmpfs root so `nix run` does not leave `*.qcow2` files in the repository.
 
 For lower-level builds without starting QEMU, build the VM derivation directly:
 

@@ -12,4 +12,9 @@ let mk = name: z: lib.nameValuePair "zvol-${lib.replaceStrings ["/" " "] ["-" "-
     fi
   '';
 };
-in { config.systemd.services = lib.mapAttrs' mk config.infra.root.zvolPlan; }
+in {
+  options.infra.root.zvolCreate.enable = lib.mkOption { type = lib.types.bool; default = !(config.infra.vm.enable or false); description = "Whether to realize planned ZFS zvols with systemd units."; };
+  config = lib.mkIf config.infra.root.zvolCreate.enable {
+    systemd.services = lib.mapAttrs' mk config.infra.root.zvolPlan;
+  };
+}
