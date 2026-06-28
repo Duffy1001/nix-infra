@@ -1,4 +1,17 @@
-{ lib, ... }:
-{
-  # Placeholder module for the scaffolded architecture.
+{ lib, config, pkgs, ... }:
+let customPkgs = import ../../pkgs { inherit pkgs; };
+in {
+  options.infra.root.nvmetExport.enable = lib.mkOption { type = lib.types.bool; default = !(config.infra.vm.enable or false); description = "Whether to realize planned NVMe/TCP target exports."; };
+  config = lib.mkIf config.infra.root.nvmetExport.enable {
+    environment.etc."nix-infra/nvmet-plan.json".text = builtins.toJSON config.infra.root.nvmetPlan;
+    systemd.services.nvmet-apply = {
+      description = "Apply NVMe/TCP target exports";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      path = [ pkgs.jq pkgs.coreutils ];
+      serviceConfig.Type = "oneshot";
+      script = "${customPkgs.nvmet-apply}/bin/nvmet-apply /etc/nix-infra/nvmet-plan.json";
+    };
+  };
 }

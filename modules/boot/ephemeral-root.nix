@@ -1,4 +1,5 @@
-{ lib, ... }:
+{ ... }:
 {
-  # Placeholder module for the scaffolded architecture.
+  boot.tmp.useTmpfs = true;
+  boot.tmp.cleanOnBoot = true;
 }
