@@ -2,7 +2,7 @@
 
 Hardware properties are intentionally out of scope for the first implementation pass. Tests should create the required topology in QEMU:
 
-- `root-vm`: ephemeral tmpfs disk, ZFS-capable root profile, SSH CA trust tooling, authorization API package, and root planning outputs. Destructive zvol/configfs realization is disabled in the boot smoke VM until the storage integration test provisions a pool.
+- `root-vm`: persistent file-backed disk, ZFS-capable root profile, SSH CA trust tooling, authorization API package, and root planning outputs. Destructive zvol/configfs realization is disabled in the boot smoke VM until the storage integration test provisions a pool.
 - `compute-vm-a` and `compute-vm-b`: represented by `app01-vm` and `app02-vm`; they boot the ephemeral leaf profile, YubiKey fixture identity, NVMe/TCP initiator units, and service mount dependencies.
 - `desktop-vm`: represented by `desktop01-vm`; it exercises the desktop profile, iPXE option wiring, and a dedicated persistent NVMe/TCP disk selection.
 
