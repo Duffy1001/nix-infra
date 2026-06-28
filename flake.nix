@@ -93,6 +93,7 @@
           zvol-plan = pkgs.callPackage ./tests/eval/zvol-plan.nix { };
           nvmet-plan = pkgs.callPackage ./tests/eval/nvmet-plan.nix { };
           service-deps = pkgs.callPackage ./tests/eval/service-deps.nix { };
+          vm-nvme-state = pkgs.testers.runNixOSTest ./tests/vm/nvme-state.nix;
         });
     };
 }
