@@ -12,17 +12,19 @@
     boot.isContainer = lib.mkForce false;
     boot.loader.grub.enable = lib.mkForce false;
     fileSystems."/" = lib.mkForce {
-      device = "tmpfs";
-      fsType = "tmpfs";
-      options = [ "mode=0755" ];
+      device = "/dev/disk/by-label/nixos";
+      fsType = "ext4";
     };
 
     virtualisation = {
       memorySize = config.infra.vm.memorySize;
-      diskImage = null;
       diskSize = config.infra.vm.diskSize;
       cores = 2;
       graphics = false;
+      qemu.options = [
+        "-serial" "mon:stdio"
+        "-nic" "user,model=virtio-net-pci"
+      ];
     };
 
     services.getty.autologinUser = "root";

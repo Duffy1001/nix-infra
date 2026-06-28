@@ -42,6 +42,7 @@
               networking.hostName = nixpkgs.lib.mkForce "root-vm";
               infra.root.zvolCreate.enable = false;
               infra.root.nvmetExport.enable = false;
+              infra.root.authorizationApi.enable = false;
             }
           ];
         };
