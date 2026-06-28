@@ -35,6 +35,8 @@ in {
     root.wait_for_unit("multi-user.target")
     app01.wait_for_unit("multi-user.target")
 
+    root_ip = root.succeed("getent hosts root | awk '{ print $1; exit }'").strip()
+
     root.succeed("modprobe configfs")
     root.succeed("modprobe nvmet")
     root.succeed("modprobe nvmet-tcp")
@@ -55,12 +57,12 @@ in {
     root.succeed("mkdir -p /sys/kernel/config/nvmet/ports/1")
     root.succeed("echo ipv4 > /sys/kernel/config/nvmet/ports/1/addr_adrfam")
     root.succeed("echo tcp > /sys/kernel/config/nvmet/ports/1/addr_trtype")
-    root.succeed("echo 0.0.0.0 > /sys/kernel/config/nvmet/ports/1/addr_traddr")
+    root.succeed(f"echo {root_ip} > /sys/kernel/config/nvmet/ports/1/addr_traddr")
     root.succeed("echo ${port} > /sys/kernel/config/nvmet/ports/1/addr_trsvcid")
     root.succeed("ln -s /sys/kernel/config/nvmet/subsystems/${nqn} /sys/kernel/config/nvmet/ports/1/subsystems/postgres-main")
 
-    app01.wait_until_succeeds("nc -z root ${port}")
-    app01.succeed("nvme connect -t tcp -a root -s ${port} -n ${nqn}")
+    app01.wait_until_succeeds(f"nc -z {root_ip} ${port}")
+    app01.wait_until_succeeds(f"nvme connect -t tcp -a {root_ip} -s ${port} -n ${nqn}")
     app01.wait_until_succeeds("test -b /dev/nvme0n1 || test -b /dev/nvme1n1")
     app01.succeed("dev=$(readlink -f /dev/disk/by-id/nvme-nqn.2026-06.local.nix-infra:root:postgres-main || (test -b /dev/nvme0n1 && echo /dev/nvme0n1 || echo /dev/nvme1n1)); mkfs.xfs -f $dev; mount $dev /var/lib/postgresql; echo state-ok > /var/lib/postgresql/state.txt")
     app01.succeed("grep -q state-ok /var/lib/postgresql/state.txt")
