@@ -1,4 +1,4 @@
 { lib }:
 {
-  mountUnitFor = path: "${lib.removePrefix "/" (lib.replaceStrings [ "/" ] [ "-" ] path)}.mount";
+  mountUnitFor = path: "${lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path)}.mount";
 }
