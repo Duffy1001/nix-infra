@@ -1,6 +1,10 @@
 { ... }:
 {
   imports = [
+    ../modules/state/contract.nix
+    ../modules/state/assertions.nix
+    ../modules/state/volume-select.nix
+    ../modules/state/service-bindings.nix
     ../modules/boot/ephemeral-root.nix
     ../modules/identity/yubikey.nix
     ../modules/identity/ssh-trust-anchor.nix
@@ -15,4 +19,3 @@
 
   infra.identity.sshTrustAnchor.enable = true;
 }
-
