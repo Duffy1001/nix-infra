@@ -1,5 +1,7 @@
 # Implementation Plan
 
+Phases 0-6 now have concrete Nix modules or package skeletons in the tree. Phase 7 is documented and ready for VM test expansion once Nix/QEMU are available in CI.
+
 ## Phase 0: Tooling and evaluation baseline
 
 - Install Nix in the development/test environment and enable `nix-command` plus `flakes` experimental features.

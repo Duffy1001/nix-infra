@@ -1,6 +1,8 @@
 { ... }:
 {
   imports = [
+    ../modules/state/contract.nix
+    ../modules/state/assertions.nix
     ../modules/root/disko-zpool.nix
     ../modules/root/zvol-plan.nix
     ../modules/root/zvol-create.nix
